@@ -1,0 +1,145 @@
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Document</title>
+	<link rel="stylesheet" href="samir.css">
+	<style>
+		body{
+			background-color: black;
+			color: white;
+		}
+		.container{
+			display:flex;
+			max-width: 320px;
+			width: 100%;
+			border: solid;
+			flex-direction:column;
+			height:320px;
+			overflow-y:auto;
+		}
+		.btn{
+			padding:10px;
+			margin:5px;
+			width: fit-content;
+			height:fit-content;
+			font-size: 16px;
+		}
+	</style>
+</head>
+<body>
+	<div style="display: flex; flex-direction: row; flex-wrap: wrap; width: 100%;">
+		<div class="container">
+			<h2>status</h2>
+			<span id="player-money">money: 0$</span>
+		</div>
+		<div class="container">
+			<h2>work</h2>
+			<button class="btn" onclick="add_money(1)">click</button>
+			<div id="player-assets" class="flex row wrappable"></div>
+		</div>
+		<div class="container">
+			<h2>shop</h2>
+			<div id="asset-list"></div>
+		</div>
+	</div>
+</body>
+<script>
+	let player_data = {
+		money:0,
+		assets:[]
+	}
+	let assets = [
+		{name:'stand (1/s)',wage:1,total:0,duration:10,time:0,price:1},
+		{name:'stand2 (2/s)',wage:2,total:0,duration:10,time:0,price:200},
+		{name:'stand3 (10/s)',wage:10,total:0,duration:10,time:0,price:1000},
+		{name:'stand4 (20/s)',wage:20,total:0,duration:10,time:0,price:2000}
+	]
+	function add_money(num){
+		player_data.money+=num
+		document.getElementById("player-money").textContent=`money: ${player_data.money}$`
+	}
+	function set_shop(){
+		document.getElementById("asset-list").innerHtml = ""
+		for(let i=0;i<assets.length;i++){
+			let div = document.createElement('div')
+			div.className="row"
+			let name = document.createElement('span')
+			name.textContent=`${assets[i].name}`
+			let btn = document.createElement("button")
+			btn.textContent=`${assets[i].price}$`
+			btn.className="btn"
+			btn.onclick=()=>{
+				if(player_data.money<assets[i].price){
+					return
+				}
+				add_money(-assets[i].price)
+				player_data.assets.push({...assets[i]})
+				set_assets()
+				/*let data = JSON.parse(localStorage.getItem('zbattle academy data'));
+				if(data.money<asset_shop[i].price){
+					return
+				}
+				data.money-=asset_shop[i].price
+				data.assets.push({...asset_shop[i]})
+				shop.event_handler.broadcast({message: 'save data',data});
+				render_p_data()*/
+			}
+			div.append(name,btn)
+			document.getElementById("asset-list").append(div)
+		}
+	}
+	function set_assets(){
+		document.getElementById("player-assets").innerHTML = " "
+		let assets = player_data.assets
+		let data = player_data
+		for(let i=0;i<assets.length;i++){
+			let asset = document.createElement("div")
+			asset.className="flex column"
+			let wage = document.createElement("p")
+			let total = document.createElement("span")
+			let collect = document.createElement("button");collect.textContent='collect'
+			collect.className="btn"
+			collect.onclick=()=>{
+				add_money(assets[i].total)
+				assets[i].total=0;
+				//shop.event_handler.broadcast({message: 'save data',data});
+				set_assets()
+			}
+			let upgrade = document.createElement("button")
+			upgrade.textContent="upgrade"
+			upgrade.onclick=()=>{
+				if(data.money<assets[i].price*0.25){
+					return
+				}
+				data.money-=assets[i].price*0.25
+				assets[i].duration-=1
+				if(assets[i].duration<1)assets[i].duration=1
+				//shop.event_handler.broadcast({message: 'save data',data});
+				set_assets()
+			}
+			wage.innerHTML=`${assets[i].name}: `
+			total.innerHTML=`${assets[i].total}`
+			asset.append(wage,total,collect)
+			document.getElementById("player-assets").append(asset)
+		}
+	}
+	function bus_update(){
+		setTimeout(() => {
+			let assets = player_data.assets
+	       for(let i=0;i<assets.length;i++){
+		       	assets[i].time++
+		       	if(assets[i].time==assets[i].duration){
+		       			assets[i].total+=assets[i].wage
+		       			assets[i].time=0
+		       		}
+	       }
+	       //shop.event_handler.broadcast({message: 'save data',data});
+	       set_assets()
+	       bus_update()
+	    }, 1000);
+	}
+	set_shop()
+	bus_update()
+</script>
+</html>

@@ -1,0 +1,286 @@
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Document</title>
+	<link rel="stylesheet" href="samir.css">
+	<style>
+		body{
+			background-color: black;
+			color: white;
+		}
+		.container{
+			width: 100%;
+			max-width:1080px;
+		}
+		.btn{
+			padding:10px;
+			margin:5px;
+			width: fit-content;
+			height:fit-content;
+			font-size: 16px;
+		}
+		yellow{
+			color: yellow;
+		}
+		blue{
+			color: blue;
+		}
+	</style>
+</head>
+<body>
+	<div class="flex full-width center column">
+		<div class="flex container outline center">
+			<h1 id="title">title</h1>
+		</div>
+		<div class="flex container outline center">
+			<div class="flex" style="width: 100%; max-width: 540; height: auto">
+				<img src="map.jpg" class="full">
+			</div>
+		</div>
+		<div class="flex container outline column">
+			<div id="narration" class="outline margin-10"></div>
+			<div id="choices" class="outline margin-10"></div>
+		</div>
+		<div class="flex container outline column" id="player-data"></div>
+	</div>
+	<script src="class.js"></script>
+	<script src="sports.js"></script>
+	<script src="artclub.js"></script>
+	<script src="bookclub.js"></script>
+	<script src="gym.js"></script>
+	<script src="cafe.js"></script>
+	<script>
+		let player_data = {
+			name: "player",
+			money: 100,
+			time:{day:0,hour:700},
+			current_day:0,
+			stats:{
+				social_skills:1,
+				knowledge:1,
+				athletic:1,
+				creativity:1
+			},
+			friend_list:[],
+			notice:["new event on day 7"]
+		}
+		function update_player_data(){
+			document.getElementById("player-data").innerHTML=`
+				<p>name: ${player_data.name}</p>
+				<p>money: ${player_data.money}$</p>
+				<p>day: ${game.days[player_data.current_day]} ${player_data.time.day} hour: ${player_data.time.hour}</p>
+				<p>social skills: ${player_data.stats.social_skills} knowledge: ${player_data.stats.knowledge} athletic: ${player_data.stats.athletic} creativity: ${player_data.stats.creativity}</p>
+			`
+		}
+		const locations = [
+			{
+				name:"map",
+				on_visit:function(){
+					//this.cons()
+					narrate("select where you want to <strong>go</strong>")
+					set_choices([
+						{name:"class",click:function(){goto("class")}},
+						{name:"dorm",click:function(){goto("dorm")}},
+						{name:"sports club",click:function(){goto("sports club")}},
+						{name:"gym",click:function(){goto("gym")}},
+						{name:"book club",click:function(){goto("book club")}},
+						{name:"art club",click:function(){goto("art club")}},
+						//{name:"cafe",click:function(){goto("cafe")}}
+					])
+				},
+				cons:function(){console.log("maps")}
+			},
+			{
+				name:"class",
+				on_visit:function(){
+					class_activity(game)
+				}
+			},
+			{
+				name:"dorm",
+				on_visit:function(){
+					narrate("what do you want to do")
+					let dorm = this
+					set_choices([
+						{name:"back to map",click:function(){goto("map")}},
+						{name:"study",click:function(){
+							if(!dorm.can_do_morning_activity())return
+							if(!dorm.can_do_evening_activity())return
+							player_data.stats.knowledge+=1
+							narrate("you studied for 2 hours <br> knowledge +1")
+							time_foward(200)
+						}},
+						{name:"art practice",click:function(){
+							if(!dorm.can_do_morning_activity())return
+							if(!dorm.can_do_evening_activity())return
+							player_data.stats.creativity+=1
+							narrate("you drew for 2 hours <br> creativity +1")
+							time_foward(200)
+						}},
+						{name:"video games",click:function(){
+							if(!dorm.can_do_morning_activity())return
+							if(!dorm.can_do_evening_activity())return
+							narrate("you played video games for 1 hour")
+							time_foward(100)
+						}},
+						{name:"contacts",click:function(){
+							if(!dorm.can_do_morning_activity())return
+							if(!dorm.can_do_evening_activity())return
+							narrate("who do you want to contact")
+							let data = []
+							for(let i=0;i<game.player_data.friend_list.length;i++){
+								let char = game.player_data.friend_list[i]
+								data.push({
+									name:char,
+									click:function(){
+										narrate(`you talked to ${char} on the phone for 2 hours <br><br> social skills +1`)
+										player_data.stats.social_skills+=1
+										time_foward(200)
+										set_choices([{name:"ok",click:function(){dorm.on_visit()}}])
+									}
+								})
+							}
+							data.push({name:"back",click:function(){dorm.on_visit()}})
+							set_choices(data)
+						}},
+						{
+							name:"notice",
+							click:function(){
+								let notice_list = "notice list: <br><br> "
+								for(let i=0;i<player_data.notice.length;i++){
+									notice_list+=`${player_data.notice[i]} <br><br>`
+								}
+								narrate(notice_list)
+							}
+						},
+						{name:"sleep",click:function(){
+							if(!dorm.can_do_morning_activity())return
+							player_data.time.day+=1
+							time_foward("next morning")
+							narrate("you slept till the next day. <br><br> what do you want to do")
+						}}
+					])
+				},
+				can_do_morning_activity:function(){
+					let dorm = this
+					if(game.player_data.current_day<5){
+						if(game.player_data.time.hour>=700&&game.player_data.time.hour<1500){
+							game.narrate("you should head to class")
+							return false
+						}
+						return true
+					}
+					return true
+				},
+				can_do_evening_activity:function(){
+					let dorm = this
+					if(game.player_data.time.hour>=2200){
+						game.narrate("its late at night. you should go to bed")
+						return false
+					}
+					return true
+				}
+			},
+			{
+				name:"sports club",
+				on_visit:function(){
+					sports_activity(game)
+				}
+			},
+			{
+				name:"gym",
+				on_visit:function(){
+					gym_activity(game)
+				}
+			},
+			{
+				name:"cafe",
+				on_visit:function(){
+					cafe_activity(game)
+				}
+			},
+			{
+				name:"art club",
+				on_visit:function(){
+					artclub_activity(game)
+				}
+			},
+			{
+				name:"book club",
+				on_visit:function(){
+					bookclub_activity(game)
+				}
+			},
+		]
+		function narrate(text){
+			let narration_elem = document.getElementById("narration")
+			narration_elem.innerHTML=`<p>${text}</p>`
+		}
+		function set_choices(data){
+			let is_processing = false
+			let choices_elem = document.getElementById("choices")
+			choices_elem.innerHTML=""
+			for(let i=0;i<data.length;i++){
+				let button = document.createElement("button")
+				button.className="btn"
+				button.textContent=data[i].name
+				button.onclick=()=>{
+					if(is_processing==false){
+						is_processing=true
+					}else{return}
+					data[i].click()
+					is_processing=false
+				}
+				choices_elem.appendChild(button)
+			}
+		}
+		function goto(location){
+			let target_location
+			document.getElementById("narration").innerHTML=""
+			document.getElementById("choices").innerHTML=""
+			for(let i=0;i<locations.length;i++){
+				if(location == locations[i].name){
+					target_location = locations[i]
+					document.getElementById("title").textContent=target_location.name
+					target_location.on_visit()
+				}
+			}
+			update_player_data()
+		}
+
+		function time_foward(time){
+			if(time=="next morning"){
+				player_data.time.day+=1
+				player_data.current_day+=1
+				if(player_data.current_day>game.days.length){player_data.current_day=0}
+				player_data.time.hour=700
+				update_player_data()
+				return
+			}
+			player_data.time.hour+=time
+			if(player_data.time.hour>2400){
+				player_data.time.day+=1
+				player_data.time.hour = 0
+				player_data.current_day+=1
+			}
+			if(player_data.current_day>game.days.length){player_data.current_day=0}
+			update_player_data()
+		}
+		
+		let game = {
+			player_data:player_data,
+			update_player_data:update_player_data,
+			locations:locations,
+			narrate:narrate,
+			set_choices:set_choices,
+			goto:goto,
+			time_foward:time_foward
+		}
+		game.init_game=()=>{console.log("initit gamesds")}
+		game.days = ["monday","tuesday","wednesday","thursday","friday","saturday","sunday"]
+		goto("map")
+		game.init_game()
+	</script>
+</body>
+</html>
