@@ -33,9 +33,12 @@
 		<div class="flex container outline center">
 			<h1 id="title">title</h1>
 		</div>
-		<div class="flex container outline center">
+		<div class="flex container outline center relative">
 			<div class="flex" style="width: 100%; max-width: 540; height: auto">
 				<img id="background_img" src="" class="full">
+			</div>
+			<div class="flex absolute priority-1" style="width: 50%; max-width: 270; height: auto; bottom: 0;">
+				<img id="char_img" src="" alt="" class="full">
 			</div>
 		</div>
 		<div class="flex container outline column">
@@ -80,6 +83,7 @@
 				on_visit:function(){
 					//this.cons()
 					set_background("assets/map.jpg")
+					set_character_image(" ")
 					narrate("select where you want to <strong>go</strong>")
 					set_choices([
 						{name:"class",click:function(){goto("class")}},
@@ -273,6 +277,9 @@
 		function set_background(img){
 			document.getElementById("background_img").src = img
 		}
+		function set_character_image(img){
+			document.getElementById("char_img").src = img
+		}
 		
 		let game = {
 			player_data:player_data,
@@ -282,12 +289,14 @@
 			set_choices:set_choices,
 			goto:goto,
 			time_foward:time_foward,
-			set_background:set_background
+			set_background:set_background,
+			set_character_image:set_character_image
 		}
 		game.init_game=()=>{console.log("initit gamesds")}
 		game.days = ["monday","tuesday","wednesday","thursday","friday","saturday","sunday"]
 		goto("map")
 		set_background("assets/map.jpg")
+		//set_character_image("assets/chars/assistant1.png")
 		game.init_game()
 	</script>
 </body>
