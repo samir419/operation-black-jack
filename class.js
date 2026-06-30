@@ -88,10 +88,13 @@ function volume_1(game){
 				The students turn over to you. you can hear whispering among them. 
 				<br><br>
 				Mr bickley: would you kindly introduce yourself. 
-				<br><br>
+			`,choices:[
+					{name:"next",func:function(){game.player_data.name=prompt("enter your name")}},
+				]},
+			{text:`
 				you introduce yourself to the class. 
 				<br><br>
-				Mr bickley: now then, go ahead and have your seat. I'm sure the students can show you around during the break. 
+				Mr bickley: now then {player_name}, go ahead and have your seat. I'm sure the students can show you around during the break. 
 
 			`},
 			{text:`
@@ -99,7 +102,7 @@ function volume_1(game){
 				<br><br>
 				The home room teacher then turns her attention to you. 
 				<br><br>
-				home room teacher: Alright player, my names miss lizbeth. let me tell you how things work in the school. right after class you can go ahead and join a club for extra curiclar activities. you can partake in as many clubs as you want. but make sure to make time to study alright? 
+				home room teacher: Alright {player_name}, my names miss lizbeth. let me tell you how things work in the school. right after class you can go ahead and join a club for extra curiclar activities. you can partake in as many clubs as you want. but make sure to make time to study alright? 
 				<br><br>
 				you nod your head
 
@@ -118,189 +121,198 @@ function volume_1(game){
 	]
 
 	let chapter_2 = [
-		{text:`
-			The class is going on normally until the principal walks in again with another student.
-			<br><br>
-			Mr bickley: good morning students. Glad to see were all working hard. Id like to introduce you to your new transfer student. 
-			<br><br>
-			Mr bickley turned to the new student. 
-			<br><br>
-			Mr bickley: please, kindly introduce yourself.
-
-		`,bg_img:"assets/class.jpg"},
-		{text:`
-			The student walked forward and struck a rather dramatic pose to emphasize her self. 
-			<br><br>
-			Student: i am justine! Im looking forward to getting to know all of you!
-			<br><br>
-			The students looked at her in awe. They started whispering among themselves. 
-
-
-		`},
-		{text:`
-			Mr bickley: well thats quite the introduction. Well now do we have an extra seat for miss justine over here.
-			<br><br>
-			Other classmate: ooh, ooh, come here, come here 
-			<br><br>
-			A group of students from the right side of the class called for justine to sit next to them. 
-
-
-		`},
-		{text:`
-			You over heard the students next to you whispering.
-			<br><br>
-			Student 1: wow that new girl is so hot.
-			<br><br>
-			Student 2: who wouldve thought wed get two consecutive transfer students. But the second one has definitely blown the class away.
-
-		`},
-		{text:`
-			A little while after lunch break. Youre walking down the hall way to your class. You see justine surrounded by several class mates, all asking trivial questions about her.
-
-		`},
-		{text:`
-			You over hear two other students walking infront of you.
-			<br><br>
-			Student 1: hey, did you know that three other students also transferred her on the same day as justine.
-			<br><br>
-			Student 2: huh? That oughta be a silly coincidence. Could they all be related to her?
-			<br><br>
-			Student 1: they all look nothing alike. Two of them are in the third year. I heard one of them has already joined the student council as the presidents advisor. And the other has become a varsity player for the volleyball team.
-			<br><br>
-			Student 2: whoa thats crazy. 
-
-		`},
-		{text:`
-			You remember seeing the council president standing beside another student and over looking all the second and first years during lunch time. The advisor appeared to be looking for some one in the crowd.
-
-		`},
-		{text:`
-			school has ended now. what do you want to do. 
-		`,choices:[
-			{name:"leave",func:function(){
-			game.player_data.time.hour=1500;game.update_player_data();
-			game.player_data.story_progress+=1
-			game.goto("map")
-		}}
-		]},
+		[
+			{text:`
+					The class is going on normally until the principal walks in again with another student.
+					<br><br>
+					Mr bickley: good morning students. Glad to see were all working hard. Id like to introduce you to your new transfer student. 
+					<br><br>
+					Mr bickley turned to the new student. 
+					<br><br>
+					Mr bickley: please, kindly introduce yourself.
+		
+				`,bg_img:"assets/class.jpg"},
+				{text:`
+					The student walked forward and struck a rather dramatic pose to emphasize her self. 
+					<br><br>
+					Student: i am justine! Im looking forward to getting to know all of you!
+					<br><br>
+					The students looked at her in awe. They started whispering among themselves. 
+		
+		
+				`},
+				{text:`
+					Mr bickley: well thats quite the introduction. Well now do we have an extra seat for miss justine over here.
+					<br><br>
+					Other classmate: ooh, ooh, come here, come here 
+					<br><br>
+					A group of students from the right side of the class called for justine to sit next to them. 
+		
+		
+				`},
+				{text:`
+					You over heard the students next to you whispering.
+					<br><br>
+					Student 1: wow that new girl is so hot.
+					<br><br>
+					Student 2: who wouldve thought wed get two consecutive transfer students. But the second one has definitely blown the class away.
+		
+				`},
+				{text:`
+					A little while after lunch break. Youre walking down the hall way to your class. You see justine surrounded by several class mates, all asking trivial questions about her.
+		
+				`},
+				{text:`
+					You over hear two other students walking infront of you.
+					<br><br>
+					Student 1: hey, did you know that three other students also transferred her on the same day as justine.
+					<br><br>
+					Student 2: huh? That oughta be a silly coincidence. Could they all be related to her?
+					<br><br>
+					Student 1: they all look nothing alike. Two of them are in the third year. I heard one of them has already joined the student council as the presidents advisor. And the other has become a varsity player for the volleyball team.
+					<br><br>
+					Student 2: whoa thats crazy. 
+		
+				`},
+				{text:`
+					You remember seeing the council president standing beside another student and over looking all the second and first years during lunch time. The advisor appeared to be looking for some one in the crowd.
+		
+				`},
+				{text:`
+					school has ended now. what do you want to do. 
+				`,choices:[
+					{name:"leave",func:function(){
+					game.player_data.time.hour=1500;game.update_player_data();
+					game.player_data.story_progress+=1
+					game.goto("map")
+				}}
+				]},
+			]
 	]
 
-	let chapter_x = [
+	let chapter_3 = [
 		[
-			{text:"chapter 2 game narration 1"},
-			{text:"game narration 3", choices:[
-				{name:"choice 1",func:function(){path=chapter_2[1];i=-1}},
-				{name:"choice 2",func:function(){path=chapter_2[2];i=-1}}
+			{text:`
+					All the students are called to the conference room for a morning assembly.
+					<br><br>
+					The students are all bickering among themselves speculating about whats going on.
+					<br><br>
+					The microphone screeches and catches everyones attention.
+					<br><br>
+					The council president, along with his advisor and the head master stand infront of the microphone.
+		
+				`,bg_img:"assets/school.jpg"},
+				{text:`
+					president : good morning students. I hope were all doing well. Im here to announce a coming event we will be holding in the next week. Our prestigious sports competition. 
+					<br><br>
+					President: i hope to see all of you participating in the event. It is a good opportunity to test your athletic abilities and bond with your class mates. Now, well have a closing word from our head master.
+		
+				`},
+				{text:`
+					You hear mr bickley go on and on about the spirit of sportsmanship and team work. 
+					<br><br>
+					You head back to class and continue your schedule.
+		
+				`},
+				{text:`
+					Later after break time, youre heading back to your class when you run into another student.
+					<br><br>
+					Student: hmm... are you a player?
+					<br><br>
+					The student looks at you in a weird way.
+		
+				`,bg_img:"assets/clss.jpg"},
+				{text:`
+					Student: you dont belong to this world do you? Youre an outsider.
+		
+				`,choices:[
+					{name:"huh?",func:function(){path = chapters[game.player_data.story_progress][1];i=-1}},
+					{name:"yes i am",func:function(){path = chapters[game.player_data.story_progress][2];i=-1;game.player_data.suspicion+=1}}
+				]}
+			],
+		[//path 1
+			{text:`
+				Justine: hey hilbert! What do you think youre doing
+				<br><br>
+				Justine rushes in to interrupt the conversation.
+				<br><br>
+				Justine: sorry about him. Hes acts kinda weird sometimes. Please dont take it personal
+
+			`,choices:[
+				{name:"its fine, im not bothered",func:function(){path = chapters[game.player_data.story_progress][3];i=-1}},
+				{name:"do you guys know each other?",func:function(){path = chapters[game.player_data.story_progress][4];i=-1}}
 			]},
-			
 		],
-		[
-			{text:"chapter 2 path 2"},
-			{text:"game narration 5", choices:[
-				{name:"choice 1",func:function(){game.player_data.time.hour=1500;game.update_player_data();game.goto("map")}}
-			]},
+		[//path 2
+			{text:`
+				Justine: hey hilbert! What do you think youre doing
+				<br><br>
+				Justine rushes in to interrupt the conversation.
+				<br><br>
+				Justine: sorry about him. Hes acts kinda weird sometimes. Please dont take it personal
+
+			`},
+			{text:`
+				Hilbert: he said it. Hes the anomaly
+				<br><br>
+				Justine: oh would you shut up she says in a aggressive whisper
+				<br><br>
+				Your suspicion meter has gone up.
+
+			`,choices:[
+				{name:"its fine, im not bothered",func:function(){path = chapters[game.player_data.story_progress][3];i=-1}},
+				{name:"do you guys know each other?",func:function(){path = chapters[game.player_data.story_progress][4];i=-1}}
+			]}
 		],
-		[
-			{text:"chapter 2 path 3"},
-			{text:"game narration 5", choices:[
-				{name:"choice 1",func:function(){game.player_data.time.hour=1500;game.update_player_data();game.goto("map")}}
-			]},
+		[// path 3
+			{text:`
+				Justine: im glad you understand. Well, ill see you later in class okay
+
+			`,choices:[
+				{name:"next",func:function(){path = chapters[game.player_data.story_progress][5];i=-1}},
+			]}
+		],
+		[// path 4
+			{text:`
+				Justine: well yeah. We all grew up in the same neighbourhood. Our parents are so close that they took us to the same school. *flusters* but dont you get the wrong idea, im not wierd.
+				<br><br>
+				Justine nervously scratches her head
+				<br><br>
+				Justine: anyways, ill see you in class later
+
+			`,choices:[
+				{name:"next",func:function(){path = chapters[game.player_data.story_progress][5];i=-1}},
+			]}
+		],
+		[//path 5
+			{text:`
+				You decide to leave them and head back to class.
+				<br><br>
+				the rest of your day went smoothly. what do you plan to do after school
+			`,choices:[
+					{name:"leave",func:function(){
+					game.player_data.time.hour=1500;game.update_player_data();
+					//game.player_data.story_progress+=1
+					game.goto("map")
+				}}
+				]}
 		]
 	]
 
-	let chapters = [chapter_1,chapter_2]
+	
+
+	let chapters = [chapter_1,chapter_2,chapter_3]
 	
 	path = chapters[game.player_data.story_progress][0]
 	
 	function set_narration(){
 		if(!path[i])return
-		game.narrate(path[i].text)
+		let nar_text=path[i].text.replace("{player_name}", game.player_data.name);
+		game.narrate(nar_text)
 		if(path[i].bg_img){
 			game.set_background(path[i].bg_img)
 		}
 		if(path[i].char_img){
-			game.set_character_image(path[i].char_img)
-		}
-		let choice_data = []
-		if(path[i].choices){
-			for(let j=0;j<path[i].choices.length;j++){
-				choice_data.push({
-					name:path[i].choices[j].name,
-					click:function(){
-						path[i].choices[j].func()
-						i+=1
-						set_narration()
-					}
-				})
-			}
-		}else{
-			choice_data.push({name:"next",click:function(){i+=1;set_narration()}})
-		}
-		game.set_choices(choice_data)
-	}
-	set_narration()
-}
-
-function volume_x(game){
-	let path = []
-	let i=0
-
-	let chapter_1 = [
-		[
-			{text:"game narration 1",bg_img:"assets/school.jpg"},
-			{text:"game narration 2"},
-			{text:"game narration 3", choices:[
-				{name:"choice 1",func:function(){console.log("func 1")}},
-				{name:"choice 2",func:function(){console.log("func 2")}}
-			]},
-			{text:"game narration 4"},
-			{text:"game narration 5", choices:[
-				{name:"choice 1",func:function(){
-				game.player_data.time.hour=1500;game.update_player_data();
-				game.player_data.story_progress+=1
-				game.goto("map")
-			}}
-			]},
-		]
-	]
-
-	let chapter_2 = [
-		[
-			{text:"chapter 2 game narration 1"},
-			{text:"game narration 3", choices:[
-				{name:"choice 1",func:function(){path=chapter_2[1];i=-1}},
-				{name:"choice 2",func:function(){path=chapter_2[2];i=-1}}
-			]},
-			
-		],
-		[
-			{text:"chapter 2 path 2"},
-			{text:"game narration 5", choices:[
-				{name:"choice 1",func:function(){game.player_data.time.hour=1500;game.update_player_data();game.goto("map")}}
-			]},
-		],
-		[
-			{text:"chapter 2 path 3"},
-			{text:"game narration 5", choices:[
-				{name:"choice 1",func:function(){game.player_data.time.hour=1500;game.update_player_data();game.goto("map")}}
-			]},
-		]
-	]
-
-	let chapters = [chapter_1,chapter_2]
-	
-	path = chapters[game.player_data.story_progress][0]
-	
-	function set_narration(){
-		if(!path[i])return
-		game.narrate(path[i].text)
-		if(path[i].bg_img){
-			game.set_background(path[i].bg_img)
-		}
-		console.log("narration function")
-		console.log(path[i].char_img)
-		if(path[i].char_img){
-			console.log("setting char path")
 			game.set_character_image(path[i].char_img)
 		}
 		let choice_data = []

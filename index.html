@@ -67,7 +67,8 @@
 			},
 			friend_list:[],
 			notice:["new event on day 7"],
-			story_progress:0
+			story_progress:0,
+			suspicion:0
 		}
 		function update_player_data(){
 			document.getElementById("player-data").innerHTML=`
@@ -294,8 +295,9 @@
 		}
 		game.init_game=()=>{console.log("initit gamesds")}
 		game.days = ["monday","tuesday","wednesday","thursday","friday","saturday","sunday"]
-		goto("map")
-		set_background("assets/map.jpg")
+		goto("class")
+		volume_1(game)
+		//set_background("assets/map.jpg")
 		//set_character_image("assets/chars/assistant1.png")
 		game.init_game()
 	</script>
